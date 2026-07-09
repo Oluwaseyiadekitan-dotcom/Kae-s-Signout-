@@ -1,315 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Congratulations Doctor.</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--gold:#d4af37;--ink:#050505;--cream:#f5f0e8;}
+html,body{height:100%;}
 body{
-
-background:#050505;
-overflow:hidden;
-font-family:Poppins,sans-serif;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
-
+  background:var(--ink);
+  font-family:"Poppins",sans-serif;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  overflow-x:hidden;
+  overflow-y:auto;
+  cursor:none;
 }
 
-/* Animated Background */
+/* CURSOR */
+#cur{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:difference;}
+#cur-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(212,175,55,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .15s ease;}
+#cur-glow{position:fixed;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.12),transparent 70%);pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:all .08s linear;}
 
-canvas{
+canvas{position:fixed;width:100%;height:100%;top:0;left:0;z-index:0;pointer-events:none;}
 
-position:absolute;
-width:100%;
-height:100%;
-top:0;
-left:0;
-z-index:0;
+.glow{position:fixed;width:500px;height:500px;background:radial-gradient(circle,rgba(212,175,55,.12),transparent);filter:blur(80px);animation:float 10s ease-in-out infinite;z-index:0;pointer-events:none;}
+@keyframes float{0%{transform:translate(-120px,-80px)}50%{transform:translate(120px,80px)}100%{transform:translate(-120px,-80px)}}
 
-}
+/* CONTENT */
+.page{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;text-align:center;padding:clamp(30px,5vh,60px) 24px clamp(40px,6vh,80px);width:100%;max-width:900px;}
 
-.glow{
+/* FIGURE */
+.figure-wrap{margin-bottom:clamp(20px,3vh,40px);}
+.figure-wrap svg{width:clamp(80px,15vw,130px);height:auto;}
 
-position:absolute;
-width:450px;
-height:450px;
-background:radial-gradient(circle,#d4af3740,transparent);
-filter:blur(70px);
-animation:float 9s ease-in-out infinite;
-}
-
-@keyframes float{
-
-0%{transform:translate(-100px,-70px);}
-50%{transform:translate(130px,70px);}
-100%{transform:translate(-100px,-70px);}
-
-}
-
-.container{
-
-position:relative;
-z-index:10;
-text-align:center;
-max-width:850px;
-padding:40px;
-
-}
-
+/* HEADING */
 h1{
-
-font-size:65px;
-font-family:'Cormorant Garamond',serif;
-font-weight:700;
-margin-bottom:15px;
-opacity:0;
-transform:translateY(40px);
-
-animation:fade 1.5s forwards;
-
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(28px,6vw,62px);
+  font-weight:700;
+  line-height:1.2;
+  margin-bottom:clamp(10px,2vh,18px);
+  opacity:0;
+  transform:translateY(30px);
+  animation:fadeUp 1.4s ease forwards .4s;
 }
-
 .subtitle{
-
-font-size:20px;
-color:#d8d8d8;
-margin-bottom:50px;
-line-height:1.8;
-opacity:0;
-animation:fade 2s forwards;
-animation-delay:.8s;
-
+  font-size:clamp(14px,2.5vw,20px);
+  color:#d0d0d0;
+  margin-bottom:clamp(24px,4vh,44px);
+  line-height:1.9;
+  opacity:0;
+  animation:fadeUp 1.4s ease forwards 1s;
 }
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 
-button{
-
-padding:18px 45px;
-font-size:17px;
-background:transparent;
-border:1px solid #d4af37;
-color:#d4af37;
-cursor:pointer;
-border-radius:50px;
-transition:.5s;
-
+/* BUTTON */
+.btn{
+  padding:clamp(14px,2vh,18px) clamp(32px,5vw,48px);
+  font-size:clamp(14px,2vw,17px);
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  cursor:pointer;
+  border-radius:60px;
+  transition:.45s;
+  letter-spacing:1px;
+  position:relative;
+  overflow:hidden;
 }
+.btn::after{content:"";position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:.4s ease;border-radius:inherit;z-index:-1;}
+.btn:hover::after,.btn:active::after{transform:scaleX(1);}
+.btn:hover,.btn:active{color:var(--ink);}
 
-button:hover{
+/* HIDDEN SECTION */
+.hidden{opacity:0;transform:translateY(28px);transition:1.2s;pointer-events:none;}
+.show{opacity:1;transform:translateY(0);pointer-events:all;}
+#question{margin-top:clamp(28px,4vh,50px);}
+#question h2{font-family:"Cormorant Garamond",serif;font-size:clamp(26px,5vw,46px);margin-bottom:12px;}
+#question p{font-size:clamp(14px,2vw,17px);color:#bbb;margin-bottom:26px;line-height:1.8;}
 
-background:#d4af37;
-color:black;
-transform:scale(1.08);
-
+/* MUSIC BTN */
+#music-btn{
+  position:fixed;bottom:clamp(16px,3vh,28px);right:clamp(16px,3vw,28px);
+  width:46px;height:46px;
+  background:rgba(212,175,55,.1);
+  border:1px solid var(--gold);
+  border-radius:50%;
+  color:var(--gold);font-size:20px;
+  cursor:pointer;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(10px);
+  transition:.3s;
 }
+#music-btn:hover{background:rgba(212,175,55,.2);}
+#music-btn .note{display:inline-block;transition:.3s;}
+#music-btn.playing .note{animation:spin 2s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-.hidden{
-
-opacity:0;
-transform:translateY(30px);
-transition:1.2s;
-
-}
-
-.show{
-
-opacity:1;
-transform:translateY(0);
-
-}
-
-#question{
-
-margin-top:60px;
-
-}
-
-#question h2{
-
-font-size:48px;
-font-family:'Cormorant Garamond',serif;
-margin-bottom:15px;
-
-}
-
-#question p{
-
-font-size:18px;
-color:#bbb;
-margin-bottom:30px;
-
-}
-
-@keyframes fade{
-
-to{
-
-opacity:1;
-transform:translateY(0);
-
-}
-
-}
-
-.arrow{
-
-font-size:40px;
-margin-top:30px;
-animation:bounce 1.5s infinite;
-
-}
-
-@keyframes bounce{
-
-50%{
-
-transform:translateY(12px);
-
-}
-
-}
-
+/* YT PLAYER HIDDEN */
+#yt-wrap{position:fixed;width:0;height:0;overflow:hidden;top:-9999px;left:-9999px;}
 </style>
-
 </head>
-
 <body>
 
-<canvas id="canvas"></canvas>
-
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<div id="cur-glow"></div>
+<canvas id="cv"></canvas>
 <div class="glow"></div>
 
-<div class="container">
+<div id="yt-wrap"><div id="yt-player"></div></div>
+<button id="music-btn" title="Toggle music"><span class="note">♪</span></button>
 
-<h1>Congratulations<br>Dr. Ebiyomare Kelvin Edesiri.</h1>
+<div class="page">
 
-<p class="subtitle">
+  <!-- ANIMATED FIGURE -->
+  <div class="figure-wrap">
+    <svg viewBox="0 0 160 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Head -->
+      <circle cx="80" cy="38" r="20" stroke="#d4af37" stroke-width="2.5"/>
+      <!-- Smile -->
+      <path d="M72 44 Q80 52 88 44" stroke="#d4af37" stroke-width="2" stroke-linecap="round"/>
+      <!-- Eyes -->
+      <circle cx="74" cy="36" r="2" fill="#d4af37"/>
+      <circle cx="86" cy="36" r="2" fill="#d4af37"/>
+      <!-- Body -->
+      <line x1="80" y1="58" x2="80" y2="140" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Left arm static -->
+      <line x1="80" y1="85" x2="48" y2="112" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Left leg -->
+      <line x1="80" y1="140" x2="58" y2="190" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Right leg -->
+      <line x1="80" y1="140" x2="102" y2="190" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Right arm (throw arm) -->
+      <g style="transform-origin:80px 85px;transform-box:fill-box;animation:throwArm 3.5s ease-in-out infinite;">
+        <line x1="80" y1="85" x2="118" y2="108" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+      <!-- Flying cap -->
+      <g style="animation:capFly 3.5s ease-in-out infinite;">
+        <!-- board -->
+        <rect x="62" y="14" width="36" height="5" fill="#d4af37" rx="1"/>
+        <!-- top -->
+        <rect x="70" y="4" width="20" height="12" fill="#d4af37" rx="2"/>
+        <!-- tassel -->
+        <line x1="98" y1="14" x2="104" y2="24" stroke="#d4af37" stroke-width="2"/>
+        <circle cx="104" cy="27" r="2.5" fill="#d4af37"/>
+      </g>
+      <style>
+        @keyframes throwArm{
+          0%,100%{transform:rotate(0deg)}
+          18%{transform:rotate(-35deg)}
+          28%{transform:rotate(25deg)}
+          36%{transform:rotate(0deg)}
+        }
+        @keyframes capFly{
+          0%{transform:translate(0px,0px) rotate(0deg)}
+          10%{transform:translate(0px,0px) rotate(0deg)}
+          30%{transform:translate(28px,-75px) rotate(28deg)}
+          55%{transform:translate(42px,-155px) rotate(55deg)}
+          75%{transform:translate(36px,-135px) rotate(40deg)}
+          100%{transform:translate(0px,0px) rotate(0deg)}
+        }
+      </style>
+    </svg>
+  </div>
 
-Eight years.<br>
+  <h1>Congratulations<br>Dr. Ebiyomare Kelvin Edesiri.</h1>
 
-Countless sleepless nights.<br>
+  <p class="subtitle">
+    Eight years.<br>
+    Countless sleepless nights.<br>
+    Thousands of pages.<br>
+    One remarkable destination.
+  </p>
 
-Thousands of pages.<br>
+  <button class="btn" onclick="reveal(this)">Tap Here</button>
 
-One remarkable destination.
-
-</p>
-
-<button onclick="reveal()">
-
-Tap Here
-
-</button>
-
-<div id="question" class="hidden">
-
-<h2>
-
-Do you want to see what's in store?
-
-</h2>
-
-<p>
-
-Someone who loves you has been quietly watching your journey...
-
-and has something waiting for you.
-
-</p>
-
-<button onclick="window.location='story.html'">
-
-Yes, Take Me There →
-
-</button>
-
-<div class="arrow">
-
-↓
-
-</div>
-
-</div>
+  <div id="question" class="hidden">
+    <h2>Do you want to see what's in store?</h2>
+    <p>Someone who loves you has something waiting for you.</p>
+    <button class="btn" onclick="goToStory()">Yes, Take Me There →</button>
+  </div>
 
 </div>
 
 <script>
-
-function reveal(){
-    window.location.href = "main.html";
-}
-
-// Floating Stars
-
-const canvas=document.getElementById("canvas");
-const ctx=canvas.getContext("2d");
-
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-let particles=[];
-
-for(let i=0;i<140;i++){
-
-particles.push({
-
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-r:Math.random()*2,
-dx:(Math.random()-.5)*.5,
-dy:(Math.random()-.5)*.5
-
+// CURSOR
+const cur=document.getElementById("cur"),ring=document.getElementById("cur-ring"),glow=document.getElementById("cur-glow");
+let mx=0,my=0,rx=0,ry=0,gx=0,gy=0;
+document.addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+"px";cur.style.top=my+"px";});
+(function curAnim(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;gx+=(mx-gx)*.07;gy+=(my-gy)*.07;ring.style.left=rx+"px";ring.style.top=ry+"px";glow.style.left=gx+"px";glow.style.top=gy+"px";requestAnimationFrame(curAnim);})();
+document.querySelectorAll("button,.btn").forEach(el=>{
+  el.addEventListener("mouseenter",()=>{cur.style.width="20px";cur.style.height="20px";});
+  el.addEventListener("mouseleave",()=>{cur.style.width="10px";cur.style.height="10px";});
 });
 
+// STARS
+const cv=document.getElementById("cv"),ctx=cv.getContext("2d");
+function rsz(){cv.width=window.innerWidth;cv.height=window.innerHeight;}rsz();window.addEventListener("resize",rsz);
+const stars=Array.from({length:160},()=>({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.5+.3,dx:(Math.random()-.5)*.4,dy:(Math.random()-.5)*.4,a:Math.random(),da:(Math.random()-.5)*.005}));
+(function draw(){ctx.clearRect(0,0,cv.width,cv.height);stars.forEach(s=>{s.x+=s.dx;s.y+=s.dy;s.a+=s.da;if(s.a<.05)s.da=Math.abs(s.da);if(s.a>1)s.da=-Math.abs(s.da);if(s.x<0||s.x>cv.width)s.dx*=-1;if(s.y<0||s.y>cv.height)s.dy*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle="rgba(212,175,55,"+(s.a*.65)+")";ctx.fill();});requestAnimationFrame(draw);})();
+
+// REVEAL
+function reveal(btn){
+  document.getElementById("question").classList.add("show");
+  btn.textContent="✓ Seen!";
+  btn.disabled=true;
+  startMusic();
 }
 
-function animate(){
+function goToStory(){startMusic();window.location.href="story.html";}
 
-ctx.clearRect(0,0,canvas.width,canvas.height);
+// YOUTUBE MUSIC
+var ytPlayer,musicPlaying=false;
+function onYouTubeIframeAPIReady(){
+  ytPlayer=new YT.Player("yt-player",{
+    height:"1",width:"1",
+    videoId:"OFcKm-5jSQE",
+    playerVars:{autoplay:0,controls:0,loop:1,playlist:"OFcKm-5jSQE",disablekb:1,rel:0,modestbranding:1},
+    events:{onReady:function(e){}}
+  });
+}
+(function(){var t=document.createElement("script");t.src="https://www.youtube.com/iframe_api";document.head.appendChild(t);})();
 
-particles.forEach(p=>{
-
-ctx.beginPath();
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-ctx.fillStyle="#d4af37";
-ctx.fill();
-
-p.x+=p.dx;
-p.y+=p.dy;
-
-if(p.x<0||p.x>canvas.width)p.dx*=-1;
-if(p.y<0||p.y>canvas.height)p.dy*=-1;
-
-});
-
-requestAnimationFrame(animate);
-
+function startMusic(){
+  if(musicPlaying||!ytPlayer||!ytPlayer.playVideo)return;
+  ytPlayer.playVideo();musicPlaying=true;
+  document.getElementById("music-btn").classList.add("playing");
 }
 
-animate();
-
-window.addEventListener('resize',()=>{
-
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
+document.getElementById("music-btn").addEventListener("click",function(){
+  if(!ytPlayer)return;
+  if(musicPlaying){ytPlayer.pauseVideo();musicPlaying=false;this.classList.remove("playing");}
+  else{ytPlayer.playVideo();musicPlaying=true;this.classList.add("playing");}
 });
-
 </script>
-
 </body>
 </html>
