@@ -216,7 +216,13 @@ function reveal(btn){
   startMusic();
 }
 
-function goToStory(){startMusic();window.location.href="story.html";}
+function goToStory() {
+    startMusic();
+
+    setTimeout(() => {
+        window.location.href = "main.html";
+    }, 500); // lets the music start before navigating
+}
 
 // YOUTUBE MUSIC
 var ytPlayer,musicPlaying=false;
